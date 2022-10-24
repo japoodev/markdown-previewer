@@ -70,7 +70,7 @@ function App() {
         className="markdown-text"
         id="editor"
         onChange={handleChange}
-        cols="30"
+        cols="50"
         rows="10"
         value={markdown}
       ></textarea>
@@ -79,6 +79,14 @@ function App() {
         id="preview"
         dangerouslySetInnerHTML={{ __html: marked(markdown) }}
       ></div>
+      <div className="mobile-menu">
+        <button className="btn-mobile" onClick={clear}>
+          Clear
+        </button>
+        <button className="btn-mobile" onClick={print}>
+          Print
+        </button>
+      </div>
     </div>
   );
 }

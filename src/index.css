@@ -71,6 +71,10 @@ body {
   margin: 20px;
 }
 
+.mobile-menu {
+  display: none;
+}
+
 blockquote {
   border-left: 3px solid;
   padding-left: 5px;
@@ -104,4 +108,47 @@ img {
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
+}
+
+/* Make it responsive for smartphones */
+@media only screen and (max-width: 600px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .markdown-text {
+    height: 50vh;
+  }
+  .navbar {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btns {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #4c515eaa;
+    padding: 10px;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .mobile-menu > button {
+    background-color: #4c515e;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    width: 100px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px;
+  }
 }
