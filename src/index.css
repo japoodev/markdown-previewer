@@ -31,7 +31,14 @@ body {
 }
 
 .btn:nth-child(3){
-  background-color: rgba(255, 0, 0, 0.422);
+  background-color:#8f2e2e;
+  color: white;
+}
+
+.btn:nth-child(3):hover{
+  background-color: white;
+  border: 1px solid rgba(255, 0, 0, 0.822);
+  color: #8f2e2e;
 }
 
 .btn {
