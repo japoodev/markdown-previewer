@@ -35,10 +35,39 @@ function App() {
   1. They are ~~evil~~ mischievous
   2. They are mean
   3. They are **not dogs**
-  `
-  let [markdown, setMarkdown] = useState(intialText);
+  `;
+  const [markdown, setMarkdown] = useState(intialText);
+  // Create a state to manage undo and redo function
+  const [undo, setUndo] = useState([]);
+  const [redo, setRedo] = useState([]);
+
   const handleChange = (e) => {
     setMarkdown(e.target.value);
+    // Add the current markdown to the undo array
+    setUndo([...undo, markdown]);
+    // Clear the redo array
+    setRedo([]);
+  };
+
+  const handleUndo = () => {
+    // If there is something in the undo array
+    if (undo.length) {
+      // Get the last item in the undo array
+      const lastItem = undo[undo.length - 1];
+      // Remove the last item from the undo array
+      undo.pop();
+      setRedo([...redo, markdown]);
+      setMarkdown(lastItem);
+    }
+  };
+
+  const handleRedo = () => {
+    if (redo.length) {
+      const lastItem = redo[redo.length - 1];
+      redo.pop();
+      setUndo([...undo, markdown]);
+      setMarkdown(lastItem);
+    }
   };
 
   marked.setOptions({
@@ -46,7 +75,11 @@ function App() {
   });
 
   const clear = () => {
-    setMarkdown("");
+    // Ask the user if they are sure they want to clear the text
+    if (window.confirm("Are you sure you want to clear the text?")) {
+      setUndo([...undo, markdown]);
+      setMarkdown("");
+    }
   };
 
   const print = () => {
@@ -58,6 +91,14 @@ function App() {
       <div className="navbar">
         <h1 className="heading">Mardown Previewer</h1>
         <div className="btns">
+          {/* Create an undo button */}
+          <button disabled={!undo.length} className="btn" onClick={handleUndo}>
+            Undo
+          </button>
+          {/* Create a redo button */}
+          <button disabled={!redo.length} className="btn" onClick={handleRedo}>
+            Redo
+          </button>
           <button className="btn" onClick={clear}>
             Clear
           </button>
@@ -80,6 +121,20 @@ function App() {
         dangerouslySetInnerHTML={{ __html: marked(markdown) }}
       ></div>
       <div className="mobile-menu">
+        <button
+          className="btn-mobile"
+          disabled={!undo.length}
+          onClick={handleUndo}
+        >
+          Undo
+        </button>
+        <button
+          className="btn-mobile"
+          disabled={!redo.length}
+          onClick={handleRedo}
+        >
+          Redo
+        </button>
         <button className="btn-mobile" onClick={clear}>
           Clear
         </button>
