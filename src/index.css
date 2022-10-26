@@ -161,6 +161,10 @@ img {
     margin: 5px 10px;
   }
 
+  .btn-mobile:nth-child(3){
+    background-color: #8f2e2e;
+  }
+
   .btn-mobile:disabled{
     background-color: #555658;
     color: #aeaeae;
