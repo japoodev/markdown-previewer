@@ -161,5 +161,9 @@ img {
     margin: 5px 10px;
   }
 
-  .btn-mobile:disabled
+  .btn-mobile:disabled{
+    background-color: #555658;
+    color: #aeaeae;
+    cursor: not-allowed;
+  }
 }
