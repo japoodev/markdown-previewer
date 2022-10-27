@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { marked } from "marked";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUndo, faRedo, faSave, faTrash, faPrint, faCircleQuestion, faPencil } from '@fortawesome/free-solid-svg-icons'
 function App() {
   const intialText = `# A Markdown Previewer App
   ## This is a sub-heading...
@@ -36,25 +37,33 @@ function App() {
   2. They are mean
   3. They are **not dogs**
   `;
-  const [markdown, setMarkdown] = useState(intialText);
-  // Create a state to manage undo and redo function
+  const [markdown, setMarkdown] = useState(
+    localStorage.getItem("markdown") || intialText
+  );
+
   const [undo, setUndo] = useState([]);
   const [redo, setRedo] = useState([]);
 
+  const openHelp = () => {
+    window.open('https://www.markdownguide.org/basic-syntax/', '_blank', 'noopener,noreferrer');
+  };
+
   const handleChange = (e) => {
     setMarkdown(e.target.value);
-    // Add the current markdown to the undo array
     setUndo([...undo, markdown]);
-    // Clear the redo array
     setRedo([]);
   };
 
+  const save = () => {
+    if (window.confirm("Do you want to save your changes?")) {
+      localStorage.setItem("markdown", markdown);
+      window.alert("Your changes have been saved!");
+    }
+  };
+
   const handleUndo = () => {
-    // If there is something in the undo array
     if (undo.length) {
-      // Get the last item in the undo array
       const lastItem = undo[undo.length - 1];
-      // Remove the last item from the undo array
       undo.pop();
       setRedo([...redo, markdown]);
       setMarkdown(lastItem);
@@ -75,7 +84,6 @@ function App() {
   });
 
   const clear = () => {
-    // Ask the user if they are sure they want to clear the text
     if (window.confirm("Are you sure you want to clear the text?")) {
       setUndo([...undo, markdown]);
       setMarkdown("");
@@ -89,13 +97,16 @@ function App() {
   return (
     <div className="container">
       <div className="navbar">
-        <h1 className="heading">Mardown Previewer</h1>
+        <h1 className="heading">Mardown Previewer {' '}
+          <FontAwesomeIcon onClick={openHelp} className="help" icon={faCircleQuestion} />
+        </h1>
         <div className="btns">
-          {/* Create an undo button */}
+          <button className="btn" onClick={save}>
+            Save
+          </button>
           <button disabled={!undo.length} className="btn" onClick={handleUndo}>
             Undo
           </button>
-          {/* Create a redo button */}
           <button disabled={!redo.length} className="btn" onClick={handleRedo}>
             Redo
           </button>
@@ -121,25 +132,36 @@ function App() {
         dangerouslySetInnerHTML={{ __html: marked(markdown) }}
       ></div>
       <div className="mobile-menu">
-        <button
-          className="btn-mobile"
-          disabled={!undo.length}
-          onClick={handleUndo}
-        >
-          Undo
-        </button>
-        <button
-          className="btn-mobile"
-          disabled={!redo.length}
-          onClick={handleRedo}
-        >
-          Redo
-        </button>
-        <button className="btn-mobile" onClick={clear}>
-          Clear
-        </button>
-        <button className="btn-mobile" onClick={print}>
-          Print
+        <div class="toggle-menu hide">
+          <button className="btn-mobile" onClick={clear}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+          <button className="btn-mobile" onClick={save}>
+            <FontAwesomeIcon icon={faSave} />
+          </button>
+          <button
+            className="btn-mobile"
+            disabled={!undo.length}
+            onClick={handleUndo}
+          >
+            <FontAwesomeIcon icon={faUndo} />
+          </button>
+          <button
+            className="btn-mobile"
+            disabled={!redo.length}
+            onClick={handleRedo}
+          >
+            <FontAwesomeIcon icon={faRedo} />
+          </button>
+          <button className="btn-mobile" onClick={print}>
+            <FontAwesomeIcon icon={faPrint} />
+          </button>
+        </div>
+        <button className="toggle-btn btn-mobile" onClick={() => {
+          const toggleMenu = document.querySelector('.toggle-menu');
+          toggleMenu.classList.toggle('hide');
+        }}>
+          <FontAwesomeIcon icon={faPencil} />
         </button>
       </div>
     </div>
