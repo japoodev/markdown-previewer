@@ -97,7 +97,7 @@ function App() {
   return (
     <div className="container">
       <div className="navbar">
-        <h1 className="heading">Mardown Previewer {' '}
+        <h1 className="heading">Markdown Previewer {' '}
           <FontAwesomeIcon onClick={openHelp} className="help" icon={faCircleQuestion} />
         </h1>
         <div className="btns">
